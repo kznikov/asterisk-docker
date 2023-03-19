@@ -1,0 +1,19 @@
+[res_pjsip] ; Realtime PJSIP configuration with caching
+endpoint/cache = memory_cache,maximum_objects=${ASTERISK_SORCERY_MAX_OBJECTS},expire_on_reload=${ASTERISK_SORCERY_EXPIRE_ON_RELOAD},object_lifetime_stale=${ASTERISK_SORCERY_OBJECT_LIFETIME_STALE},object_lifetime_maximum=${ASTERISK_SORCERY_LIFETIME_MAXIMUM},full_backend_cache=${ASTERISK_SORCERY_FULL_BACKEND_CACHE}
+endpoint = realtime,ps_endpoints
+
+auth/cache = memory_cache,maximum_objects=${ASTERISK_SORCERY_MAX_OBJECTS},expire_on_reload=${ASTERISK_SORCERY_EXPIRE_ON_RELOAD},object_lifetime_stale=${ASTERISK_SORCERY_OBJECT_LIFETIME_STALE},object_lifetime_maximum=${ASTERISK_SORCERY_LIFETIME_MAXIMUM},full_backend_cache=${ASTERISK_SORCERY_FULL_BACKEND_CACHE}
+auth = realtime,ps_auths
+
+aor/cache = memory_cache,maximum_objects=${ASTERISK_SORCERY_MAX_OBJECTS},expire_on_reload=${ASTERISK_SORCERY_EXPIRE_ON_RELOAD},object_lifetime_stale=${ASTERISK_SORCERY_OBJECT_LIFETIME_STALE},object_lifetime_maximum=${ASTERISK_SORCERY_LIFETIME_MAXIMUM},full_backend_cache=${ASTERISK_SORCERY_FULL_BACKEND_CACHE}
+aor = realtime,ps_aors
+
+domain_alias/cache = memory_cache,maximum_objects=${ASTERISK_SORCERY_MAX_OBJECTS},expire_on_reload=${ASTERISK_SORCERY_EXPIRE_ON_RELOAD},object_lifetime_stale=${ASTERISK_SORCERY_OBJECT_LIFETIME_STALE},object_lifetime_maximum=${ASTERISK_SORCERY_LIFETIME_MAXIMUM},full_backend_cache=${ASTERISK_SORCERY_FULL_BACKEND_CACHE}
+domain_alias = realtime,ps_domain_aliases
+
+contact/cache = memory_cache,maximum_objects=${ASTERISK_SORCERY_MAX_OBJECTS},expire_on_reload=${ASTERISK_SORCERY_EXPIRE_ON_RELOAD},object_lifetime_stale=${ASTERISK_SORCERY_OBJECT_LIFETIME_STALE},object_lifetime_maximum=${ASTERISK_SORCERY_LIFETIME_MAXIMUM},full_backend_cache=${ASTERISK_SORCERY_FULL_BACKEND_CACHE}
+contact = realtime,ps_contacts
+
+[res_pjsip_endpoint_identifier_ip]
+identify/cache = memory_cache,maximum_objects=${ASTERISK_SORCERY_MAX_OBJECTS},expire_on_reload=${ASTERISK_SORCERY_EXPIRE_ON_RELOAD},object_lifetime_stale=${ASTERISK_SORCERY_OBJECT_LIFETIME_STALE},object_lifetime_maximum=${ASTERISK_SORCERY_LIFETIME_MAXIMUM},full_backend_cache=${ASTERISK_SORCERY_FULL_BACKEND_CACHE}
+identify = realtime,ps_endpoint_id_ips

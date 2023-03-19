@@ -1,0 +1,14 @@
+[incoming]
+
+exten => _+X., 1, AGI(agi://${ASTERISK_AGI_HOST}/)
+
+[notifications]
+
+exten => _X., 1, AGI(agi://${ASTERISK_AGI_HOST}/,3)
+
+[outgoing]
+
+exten => _X., 1, AGI(agi://${ASTERISK_AGI_HOST}/)
+
+[default]
+exten => s, 1, Noop(OPTIONS Reply)

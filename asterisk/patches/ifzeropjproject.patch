@@ -1,0 +1,75 @@
+--- third-party/pjproject/source/pjlib/src/pj/ssl_sock_ossl.c.orig
++++ third-party/pjproject/source/pjlib/src/pj/ssl_sock_ossl.c
+@@ -54,7 +54,7 @@
+ #include <openssl/engine.h>
+ #include <openssl/opensslconf.h>
+ 
+-#if !defined(OPENSSL_NO_EC) && OPENSSL_VERSION_NUMBER >= 0x1000200fL
++#if !defined(OPENSSL_NO_EC) && OPENSSL_VERSION_NUMBER >= 0x1000200fL && !defined(LIBRESSL_VERSION_NUMBER)
+ 
+ #   include <openssl/obj_mac.h>
+ 
+@@ -112,7 +112,7 @@
+ #endif
+ 
+ 
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
+ #  define OPENSSL_NO_SSL2          /* seems to be removed in 1.1.0 */
+ #  define M_ASN1_STRING_data(x)            ASN1_STRING_get0_data(x)
+ #  define M_ASN1_STRING_length(x)   ASN1_STRING_length(x)
+@@ -528,7 +528,7 @@
+     /* Init OpenSSL lib */
+     SSL_library_init();
+     SSL_load_error_strings();
+-#if OPENSSL_VERSION_NUMBER < 0x009080ffL
++#if OPENSSL_VERSION_NUMBER < 0x009080ffL && !defined(LIBRESSL_VERSION_NUMBER)
+     /* This is now synonym of SSL_library_init() */
+     OpenSSL_add_all_algorithms();
+ #endif
+@@ -579,7 +579,8 @@
+ 
+        SSL_set_session(ssl, SSL_SESSION_new());
+ 
+-#if !defined(OPENSSL_NO_EC) && OPENSSL_VERSION_NUMBER >= 0x1000200fL
++#if 0
++//!defined(OPENSSL_NO_EC) && OPENSSL_VERSION_NUMBER >= 0x1000200fL && !defined(LIBRESSL_VERSION_NUMBER)
+        openssl_curves_num = SSL_get_shared_curve(ssl,-1);
+        if (openssl_curves_num > PJ_ARRAY_SIZE(openssl_curves))
+            openssl_curves_num = PJ_ARRAY_SIZE(openssl_curves);
+@@ -748,7 +749,7 @@
+     BIO *bio;
+     DH *dh;
+     long options;
+-#if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L
++#if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L && !defined(LIBRESSL_VERSION_NUMBER)
+     EC_KEY *ecdh;
+ #endif
+     SSL_METHOD *ssl_method = NULL;
+@@ -902,7 +903,7 @@
+                    if (dh != NULL) {
+                        if (SSL_CTX_set_tmp_dh(ctx, dh)) {
+                            options = SSL_OP_CIPHER_SERVER_PREFERENCE |
+-    #if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L
++    #if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L && !defined(LIBRESSL_VERSION_NUMBER)
+                                      SSL_OP_SINGLE_ECDH_USE |
+     #endif
+                                      SSL_OP_SINGLE_DH_USE;
+@@ -970,7 +971,7 @@
+        if (SSL_CTX_ctrl(ctx, SSL_CTRL_SET_ECDH_AUTO, 1, NULL)) {
+            PJ_LOG(4,(ssock->pool->obj_name, "SSL ECDH initialized "
+                      "(automatic), faster PFS ciphers enabled"));
+-    #if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L
++    #if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L && !defined(LIBRESSL_VERSION_NUMBER)
+        } else {
+            /* enables AES-128 ciphers, to get AES-256 use NID_secp384r1 */
+            ecdh = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1);
+@@ -1227,7 +1228,7 @@
+ 
+ static pj_status_t set_sigalgs(pj_ssl_sock_t *ssock)
+ {
+-#if OPENSSL_VERSION_NUMBER >= 0x1000200fL
++#if OPENSSL_VERSION_NUMBER >= 0x1000200fL && !defined(LIBRESSL_VERSION_NUMBER)
+     int ret;
+ 
+     if (ssock->param.sigalgs.ptr && ssock->param.sigalgs.slen) {

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  agi-processing:
+    container_name: agi-processing
+    image: agi-processing
+    build: agi-processing
+    env_file:
+      - .env
+    volumes:
+      - sounds:/var/www/agi-processing/sounds
+    ports:
+      - "4573:4573/tcp"
+    depends_on:
+      - database
+    restart: unless-stopped
+
+  asterisk:
+    container_name: asterisk
+    image: asterisk
+    build: asterisk
+    env_file:
+      - .env
+    volumes:
+      - sounds:/var/lib/asterisk/sounds/
+    ports:
+      - "5060:5060/udp"
+      - "6500-7000:6500-7000/udp"
+      - "8088:8088/tcp"
+    depends_on:
+      - database
+      - beanstalkd
+      - agi-processing
+    restart: unless-stopped
+
+  beanstalkd:
+    container_name: beanstalkd
+    image: schickling/beanstalkd
+    env_file:
+      - .env
+    ports:
+      - "11300:11300/tcp"
+    restart: unless-stopped
+
+  database:
+    container_name: database
+    image: mariadb:10.7.3
+    env_file:
+      - .env
+    volumes:
+      - /var/lib/mysql/
+    ports:
+      - "3308:3306/tcp"
+    restart: unless-stopped
+
+volumes:
+  sounds:
